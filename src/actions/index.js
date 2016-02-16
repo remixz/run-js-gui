@@ -18,22 +18,37 @@ export function addInstance (opts) {
 }
 
 export function startInstance (instance) {
-  return {
-    type: START_INSTANCE,
-    instance
+  return function (dispatch) {
+    ipc.send('start-instance', instance)
+    ipc.once('start-instance', (event, dir) => {
+      dispatch({
+        type: START_INSTANCE,
+        dir
+      })
+    })
   }
 }
 
 export function stopInstance (instance) {
-  return {
-    type: STOP_INSTANCE,
-    instance
+  return function (dispatch) {
+    ipc.send('stop-instance', instance)
+    ipc.once('stop-instance', (event, dir) => {
+      dispatch({
+        type: STOP_INSTANCE,
+        dir
+      })
+    })
   }
 }
 
 export function deleteInstance (instance) {
-  return {
-    type: DELETE_INSTANCE,
-    instance
+  return function (dispatch) {
+    ipc.send('delete-instance', instance)
+    ipc.once('delete-instance', (event, dir) => {
+      dispatch({
+        type: DELETE_INSTANCE,
+        dir
+      })
+    })
   }
 }
